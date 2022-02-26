@@ -1,7 +1,7 @@
 import { GetServerSideProps, NextPage } from 'next';
 import cookie from 'cookie';
 
-export default function useAuth(Page: NextPage) {
+export default function useWalletAddress(Page: NextPage) {
     return Page;
 }
 

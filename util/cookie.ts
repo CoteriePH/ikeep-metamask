@@ -6,6 +6,7 @@ export function setCookie(cname: string, cvalue: string | Object, exdays: number
 }
 
 export function getCookie(cname: string) {
+    if (typeof window == 'undefined') return "";
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
     let ca = decodedCookie.split(';');

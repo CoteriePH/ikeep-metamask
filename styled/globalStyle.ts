@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
     }
     body {
         position: relative;
+        scroll-behavior: smooth;
     }
     a {
         text-decoration: none;
@@ -18,8 +19,29 @@ const GlobalStyle = createGlobalStyle`
     .avatar:hover {
         box-shadow: 0 0 0 2px #8168FF;
     }
+    .loading-avatar {
+        animation: loadingAvatar 1.5s infinite ease;
+        transition: 200ms;
+    }
     .flex {
         flex: 1;
+    }
+    .loader {
+        animation: spin 1s infinite linear;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        50% { transform: rotate(180deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes loadingAvatar {
+        0% { box-shadow: 0 0 0 2px #8168FF; }
+        25% { box-shadow: 0 0 0 4px hotpink; }
+        50% { box-shadow: 0 0 0 8px #8168FF; }
+        75% { box-shadow: 0 0 0 4px #0ed1b1; }
+        100% { box-shadow: 0 0 0 2px #8168FF; }
     }
 `;
 

@@ -9,7 +9,7 @@
         "util/*"
       ],
       "@styled/*": [
-        "components/styled/*"
+        "styled/*"
       ],
       "@components/*": [
         "components/*"
