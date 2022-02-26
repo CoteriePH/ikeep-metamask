@@ -19,7 +19,7 @@ const Column = styled.div<CenterType>`
     
     display: flex;
     flex-direction: ${props => {
-        if (!props.direction) throw new Error("direction is required");
+        if (!props.direction) throw new Error("direction prop in Center component is required");
         return props.direction;
     }};
     justify-content: center;
