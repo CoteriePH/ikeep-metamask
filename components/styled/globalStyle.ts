@@ -18,6 +18,9 @@ const GlobalStyle = createGlobalStyle`
     .avatar:hover {
         box-shadow: 0 0 0 2px #8168FF;
     }
+    .flex {
+        flex: 1;
+    }
 `;
 
 export default GlobalStyle;
