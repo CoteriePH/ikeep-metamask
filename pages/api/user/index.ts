@@ -1,5 +1,5 @@
 import { dehash } from "@util/hash";
-import client from "@util/prisma_client";
+import client from "@lib/prisma_client";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
