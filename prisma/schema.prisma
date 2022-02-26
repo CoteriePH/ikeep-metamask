@@ -1,0 +1,26 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id             String    @id @default(cuid())
+    wallet_address String    @unique
+    nickname       String
+    decrypting_pin String
+    avatar         String
+    accounts       Account[]
+}
+
+model Account {
+    id                   String @id @default(cuid())
+    account_name         String
+    username_email       String // hashed using User.decrypting_pin and server's private key
+    password             String // hashed using User.decrypting_pin and server's private key
+    owner                User   @relation(fields: [owner_wallet_address], references: [wallet_address])
+    owner_wallet_address String
+}
