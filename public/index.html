@@ -40,7 +40,7 @@
             window.userWalletAddress = accounts[0];
             userWallet.innerText = window.userWalletAddress;
 
-            setCookie('userWalletAddress', window.userWalletAddress);
+            setCookie('userWalletAddress', window.userWalletAddress, 1);
 
             loginButton.innerText = 'Sign out of MetaMask';
             window.location.href = 'http://localhost:3001/login';

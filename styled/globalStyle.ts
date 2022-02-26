@@ -23,6 +23,9 @@ const GlobalStyle = createGlobalStyle`
         animation: loadingAvatar 1.5s infinite ease;
         transition: 200ms;
     }
+    .success-avatar {
+        box-shadow: 0 0 0 4px yellowgreen;
+    }
     .flex {
         flex: 1;
     }

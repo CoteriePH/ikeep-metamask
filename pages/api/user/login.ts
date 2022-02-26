@@ -17,7 +17,7 @@ export default validate({ body: schema }, async (req: NextApiRequest, res: NextA
         const { decrypting_pin, wallet_address } = req.body;
 
         const userExists = await client.user.findFirst({
-            where: { decrypting_pin: hash(decrypting_pin), wallet_address: hash(wallet_address) },
+            where: { decrypting_pin: hash(decrypting_pin), wallet_address: wallet_address },
             include: { accounts: true },
         });
 

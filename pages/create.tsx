@@ -1,4 +1,3 @@
-import useWalletAddress from '@hooks/useWalletAddress';
 import Center from 'styled/Center';
 import Text from 'styled/Text';
 import TextInput from 'styled/TextInput';
@@ -6,8 +5,12 @@ import React, { useEffect, useState } from 'react';
 import Avatar from '@components/Avatar';
 import styled from 'styled-components';
 import Column from 'styled/Column';
-import { BlueButton, DangerButton } from 'styled/Button';
+import { BlueButton, DangerButton, TealButton } from 'styled/Button';
 import { TextInputEvent } from '@lib/types';
+import useFetch from '@hooks/useFetch';
+import { getCookie, setCookie } from '@util/cookie';
+import Link from 'next/link';
+import { GetServerSideProps } from 'next';
 
 function Create() {
     const [avatar, setAvatar] = useState('/assets/user_placeholder.svg');
@@ -17,6 +20,22 @@ function Create() {
 
     const [valid, setValid] = useState(false);
     const [currentView, setCurrentView] = useState(0);
+
+    const { data, error, loading, goFetch, success } = useFetch('/api/user/create', {
+        options: {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nickname, decrypting_pin, avatar, wallet_address: getCookie('userWalletAddress') })
+        },
+        fetchOnMount: false
+    });
+
+    const handleSave = async () => {
+        await goFetch();
+        if (data && !error) {
+            setCookie('token', data.access_token);
+        }
+    };
 
     useEffect(() => {
         setValid(
@@ -57,34 +76,64 @@ function Create() {
                         onInput={(e: TextInputEvent) => setdecrypting_pin_confirm(e.target.value)} />
                 </Column>
 
-                <Center direction='row' pt={1}>
+                <Center direction='column' pt={1}>
                     <BlueButton disabled={!valid} onClick={() => setCurrentView(1)}> next </BlueButton>
+
+                    <Link href='/login' passHref>
+                        <Text color='#0D84A6' fontSize={.8} mt={2} style={{ cursor: 'pointer' }}>
+                            Already have an account? Login instead
+                        </Text>
+                    </Link>
                 </Center>
+
             </>}
 
             {currentView === 1 && <>
+                <Avatar
+                    src={avatar} size='5rem'
+                    className={loading ? 'loading-avatar' : success ? 'success-avatar' : ''} />
 
-                <Avatar src={avatar} size='5rem' />
-                <Text as='h3' mb={1}> Choose your Avatar </Text>
+                <Text as='h3' mb={1} color={success ? 'green' : error ? 'red' : 'inherit'}>
+                    {
+                        loading ? 'Creating your account...'
+                            : success ? 'Yey! Account created ✔️'
+                                : error ? error.message || 'Something went wrong' : 'Choose your Avatar'
+                    }
+                </Text>
 
-                <AvatarOptions>
-                    {avatarSources.map((source, index) =>
-                        <Center direction='column' onClick={() => setAvatar(source)} key={index}>
-                            <Avatar size='5rem' src={source} />
-                        </Center>)}
-                </AvatarOptions>
+                {!success ? <>
+                    <AvatarOptions>
+                        {avatarSources.map((source, index) =>
+                            <Center direction='column' onClick={() => setAvatar(source)} key={index}>
+                                <Avatar size='4.5rem' src={source} />
+                            </Center>)}
+                    </AvatarOptions>
 
-                <Center direction='row' pt={1} gap={1}>
-                    <DangerButton onClick={() => setCurrentView(0)}> back </DangerButton>
-                    <BlueButton disabled={!valid}> save </BlueButton>
-                </Center>
+                    <Center direction='row' pt={1} gap={1}>
+                        <DangerButton disabled={loading} onClick={() => setCurrentView(0)}> back </DangerButton>
+                        <BlueButton disabled={!valid || loading} onClick={handleSave}> save </BlueButton>
+                    </Center>
+
+                    <Link href='/login' passHref>
+                        <Text color='#0D84A6' fontSize={.8} style={{ cursor: 'pointer' }}>
+                            Already have an account? Login instead
+                        </Text>
+                    </Link>
+                </>
+                    :
+                    <Center direction='row'>
+                        <Link href='/accounts' passHref>
+                            <TealButton> Login as {nickname}</TealButton>
+                        </Link>
+                    </Center>
+                }
             </>}
 
         </Center>
     );
 }
 
-export default useWalletAddress(Create);
+export default Create;
 
 const AvatarOptions = styled.div`
     width: 100%;

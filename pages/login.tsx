@@ -5,15 +5,15 @@ import Center from 'styled/Center';
 import Column from 'styled/Column';
 import Text from 'styled/Text';
 import TextInput from 'styled/TextInput';
-import { getCookie } from '@util/cookie';
-import type { NextPage } from 'next';
+import { getCookie, setCookie } from '@util/cookie';
+import type { GetServerSideProps, NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import useWalletAddress from '@hooks/useWalletAddress';
 import Spinner from '@components/spinner';
+import validateUserFromServer from '@util/validateUserFromServer';
 
 const Login: NextPage = () => {
 
@@ -32,7 +32,10 @@ const Login: NextPage = () => {
     });
 
     useEffect(() => {
-        if (data && !error) router.replace('/accounts');
+        if (data && !error) {
+            setCookie('token', data.accessToken, 1);
+            router.replace('/accounts');
+        }
     }, [data]);
 
     const handleLogin = async () => {
@@ -71,12 +74,14 @@ const Login: NextPage = () => {
             <BlueButton onClick={handleLogin} disabled={pin.length < 9 || loading}> login </BlueButton>
 
             <Link href='/create' passHref>
-                <Text color='#0D84A6' style={{ cursor: 'pointer' }}>
-                    create account
+                <Text color='#0D84A6' style={{ cursor: 'pointer' }} mt={1} fontSize={.9}>
+                    Don&apos;t have an account? Create one
                 </Text>
             </Link>
 
         </Center>
     </>;
 };
-export default useWalletAddress(Login);
+export default Login;
+
+export const getServerSideProps: GetServerSideProps = validateUserFromServer;

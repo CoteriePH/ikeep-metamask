@@ -12,6 +12,7 @@ export default function useFetch(
     const [data, setData] = React.useState<any>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
     const [error, setError] = React.useState<any>(null);
+    const [success, setSuccess] = React.useState<any>(false);
 
     const goFetch = async (newUrl = url) => {
         if (newUrl.trim() === '') throw new Error('url is empty');
@@ -20,7 +21,11 @@ export default function useFetch(
         setError(null);
         const res = await fetch(newUrl, config.options);
         const data = await res.json();
-        if (res.ok) setData(data);
+        if (res.ok) {
+            setData(data);
+            setSuccess(true);
+            return data;
+        }
         else setError(data);
         setLoading(false);
     };
@@ -29,5 +34,5 @@ export default function useFetch(
         if (config.fetchOnMount) goFetch();
     }, [url]);
 
-    return { data, loading, error, goFetch };
+    return { data, loading, error, success, goFetch };
 }
