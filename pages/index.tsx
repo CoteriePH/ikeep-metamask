@@ -1,4 +1,6 @@
 import useForm from '@hooks/useForm';
+import { BlueButton } from '@styled/Buttont';
+import Center from '@styled/Center';
 import Column from '@styled/Column';
 import Container from '@styled/Container';
 import Row from '@styled/Row';
@@ -12,7 +14,7 @@ const Home: NextPage = () => {
   const { values, onInputHandler } = useForm({ username: 'das', password: 'asd' });
 
   return <>
-    <Row verticalAlignment='center' horizontalAlignment='center' height='100vh'>
+    <Center direction='column' gap={1}>
       <Text as='h1' m={1}> {values.username} {values.password} </Text>
       <TextInput
         name='username'
@@ -23,7 +25,8 @@ const Home: NextPage = () => {
         name='password'
         placeholder='Password'
         onInput={onInputHandler} />
-    </Row>
+      <BlueButton onClick={e => console.log('hello')}> Save </BlueButton>
+    </Center>
   </>;
 };
 
