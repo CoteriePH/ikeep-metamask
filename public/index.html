@@ -1,0 +1,78 @@
+<html>
+
+<head>
+    <title> iKeep </title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="icon" href="./logo.svg">
+</head>
+
+<body class="flex w-screen h-screen justify-center items-center">
+    <div class="flex-col space-y-2 justify-center items-center">
+        <button id='loginButton' class="mx-auto rounded-md p-2 bg-purple-500 text-white">
+            Login with MetaMask
+        </button>
+        <p id='userWallet' class='text-lg text-gray-600 my-2'></p>
+    </div>
+
+    <script>
+        window.userWalletAddress = null;
+        const loginButton = document.getElementById('loginButton');
+        const userWallet = document.getElementById('userWallet');
+
+        function toggleButton() {
+            if (!window.ethereum) {
+                loginButton.innerText = 'MetaMask is not installed';
+                loginButton.classList.remove('bg-purple-500', 'text-white');
+                loginButton.classList.add('bg-gray-500', 'text-gray-100', 'cursor-not-allowed');
+                return false;
+            }
+            loginButton.addEventListener('click', loginWithMetaMask);
+        }
+
+        async function loginWithMetaMask() {
+            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+                .catch((e) => {
+                    console.error(e.message);
+                    return;
+                });
+            if (!accounts) { return; }
+
+            window.userWalletAddress = accounts[0];
+            userWallet.innerText = window.userWalletAddress;
+
+            setCookie('userWalletAddress', window.userWalletAddress);
+
+            loginButton.innerText = 'Sign out of MetaMask';
+            window.location.href = 'http://localhost:3001/login';
+
+            loginButton.removeEventListener('click', loginWithMetaMask);
+            setTimeout(() => {
+                loginButton.addEventListener('click', signOutOfMetaMask);
+            }, 200);
+        }
+
+        function signOutOfMetaMask() {
+            window.userWalletAddress = null;
+            userWallet.innerText = '';
+            loginButton.innerText = 'Sign in with MetaMask';
+
+            loginButton.removeEventListener('click', signOutOfMetaMask);
+            setTimeout(() => {
+                loginButton.addEventListener('click', loginWithMetaMask);
+            }, 200);
+        }
+
+        function setCookie(cname, cvalue, exdays = 1) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            toggleButton();
+        });
+    </script>
+</body>
+
+</html>
