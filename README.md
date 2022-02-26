@@ -6,7 +6,7 @@ Follow the steps below to get started:
 
 1. Clone this repo and install dependencies
 ```bash
-git clone https://github.com/CoteriePH/iKeep.git && cd iKeep && npm i
+git clone https://github.com/CoteriePH/ikeep-metamask.git && cd iKeep && npm i
 ```
 
 2. Make sure you have a worrking postgresql database.
