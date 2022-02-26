@@ -6,6 +6,7 @@ type TextInputProps = SpacingProps & {
     type?: "text" | "password",
     value?: string,
     name?: string,
+    fullWidth?: boolean,
     placeholder: string,
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void,
     onInput?: (e: React.ChangeEvent<HTMLInputElement>) => void,
@@ -32,6 +33,7 @@ const TextInput = styled.input.attrs(props => ({
     border: 2px solid #EBEFFE;
     min-width: 20ch;
     width: ${props => props.width || 'auto'};
+    width: ${props => props.fullWidth ? '100%' : 'auto'};
 
     &::placeholder {
         color: #8168FF;
