@@ -89,8 +89,8 @@
             setCookie('userWalletAddress', window.userWalletAddress, 1);
 
             loginButton.innerText = 'Sign out of MetaMask';
-            // window.location.href = 'https://ikeep.vercel.app/login';
-            window.location.href = 'http://localhost:3000/login';
+            window.location.href = 'https://ikeep.vercel.app/login';
+            // window.location.href = 'http://localhost:3000/login';
 
             loginButton.removeEventListener('click', loginWithMetaMask);
             setTimeout(() => {
