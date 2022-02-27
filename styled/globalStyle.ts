@@ -32,6 +32,9 @@ const GlobalStyle = createGlobalStyle`
     .loader {
         animation: spin 1s infinite linear;
     }
+    .clickable {
+        cursor: pointer;
+    }
 
     @keyframes spin {
         0% { transform: rotate(0deg); }

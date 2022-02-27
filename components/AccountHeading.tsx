@@ -35,7 +35,7 @@ export default function AccountHeading({ nickname, avatar }: AccountHeadingProps
                     <Text
                         onClick={() => router.replace('/customize')}
                         as='h2' style={{ transform: 'translateY(4px)' }}
-                        color='#788CB3'> <i className='bx bxs-edit-alt'></i> </Text>
+                        color='#788CB3'> <i className='bx bxs-edit-alt clickable'></i> </Text>
                 </Row>
             </Column>
             <div className="flex" />

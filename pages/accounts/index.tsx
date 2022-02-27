@@ -1,5 +1,5 @@
 import useUser from '@hooks/context_providers/useUser';
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import Container from 'styled/Container';
 import AccountHeading from '@components/AccountHeading';
 import styled from 'styled-components';
@@ -72,7 +72,7 @@ const HasAccounts = styled.div`
     gap: 1rem;
 `;
 
-export default Accounts;
+export default memo(Accounts);
 
 // ===========================================================
 
