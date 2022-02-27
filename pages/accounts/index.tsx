@@ -17,7 +17,7 @@ function Accounts({ _user }: any) {
 
     useEffect(() => {
         if (_user) setUser(_user);
-    }, [_user]);
+    });
 
     if (!user) return null;
     return (

@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import useForm from '@hooks/useForm';
-import useUser from '@hooks/context_providers/useUser';
 import { useRouter } from 'next/router';
 import Container from 'styled/Container';
 import TextInput from 'styled/TextInput';
@@ -18,16 +17,15 @@ import Row from 'styled/Row';
 
 export default function Add() {
 
-    const { values, onInputHandler } = useForm({
+    const { values, onInputHandler } = useForm(() => ({
         account_name: '',
         username_email: '',
         password: '',
-    });
+    }));
     const [valid, setValid] = React.useState(false);
     const router = useRouter();
-    const { user, setUser } = useUser();
 
-    const { data, loading, error, goFetch, success } = useFetch('/api/account/add', {
+    const { data, loading, error, goFetch } = useFetch('/api/account/add', {
         fetchOnMount: false,
         options: {
             method: 'POST',
@@ -44,7 +42,7 @@ export default function Add() {
         if (data && !error) {
             router.replace('/accounts');
         }
-    }, [data]);
+    });
 
 
     const handleStore = () => {
