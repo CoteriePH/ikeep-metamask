@@ -20,7 +20,7 @@ function Create() {
     const [valid, setValid] = useState(false);
     const [currentView, setCurrentView] = useState(0);
 
-    const { data, error, loading, goFetch } = useFetch('/api/user/create', {
+    const { data, error, loading, goFetch, success } = useFetch('/api/user/create', {
         options: {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -97,7 +97,7 @@ function Create() {
                     }
                 </Text>
 
-                {!data ? <>
+                {!data && !success ? <>
                     <AvatarOptions>
                         {avatarSources.map((source, index) =>
                             <Center direction='column' onClick={() => setAvatar(source)} key={index}>
@@ -119,7 +119,7 @@ function Create() {
                     :
                     <Center direction='row'>
                         <Link href='/login' passHref>
-                            <TealButton> Login as {nickname}</TealButton>
+                            <TealButton disabled={!success}> Login as {nickname}</TealButton>
                         </Link>
                     </Center>
                 }

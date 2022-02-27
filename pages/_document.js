@@ -37,6 +37,9 @@ export default class MyDocument extends Document {
                     <link href="https://fonts.googleapis.com/css2?family=Archivo&family=Pacifico&display=swap" rel="stylesheet" />
                     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet' />
                     <link rel='icon' href='/logo.svg' />
+                    <meta name="description" content="Secured, Safe, and Encrypted account storage system" />
+                    <meta name='author' content='Coterie PH' />
+                    <link rel='author' href='https://github.com/CoteriePH' />
                 </Head>
                 <body>
                     <Main />
