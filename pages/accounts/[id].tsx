@@ -83,7 +83,7 @@ export default function Edit({ account }: { account: any; }) {
     }, [decyrptionPin]);
 
     return <>
-        <Head> <title> View Account - iKeep </title> </Head>
+        <Head> <title> Your {account.account_name} account - iKeep </title> </Head>
 
         <Container width='min(600px, 100vw)' m='auto' px={2}>
 

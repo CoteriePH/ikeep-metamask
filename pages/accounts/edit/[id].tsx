@@ -45,13 +45,13 @@ export default function Edit({ account }: { account: any; }) {
     };
 
     return <>
-        <Head> <title> Edit Account - iKeep </title> </Head>
+        <Head> <title> Edit Your {account.account_name} account - iKeep </title> </Head>
 
         <Container width='min(600px, 100vw)' m='auto' px={2}>
             <Container py={2}> <BigHeader> Edit account </BigHeader> </Container>
 
             <Text as='h1' mb={2} align='right' color='#47848C'>
-                FACEBOOK
+                {account.account_name.toUpperCase()}
             </Text>
 
             <FormFieldContainer>
