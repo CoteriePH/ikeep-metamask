@@ -19,12 +19,12 @@ export default function useFetch(
         setLoading(true);
         setData(null);
         setError(null);
+        setSuccess(false);
         const res = await fetch(newUrl, config.options);
         const data = await res.json();
         if (res.ok) {
             setData(data);
             setSuccess(true);
-            return data;
         }
         else setError(data);
         setLoading(false);

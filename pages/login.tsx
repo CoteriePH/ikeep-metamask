@@ -13,7 +13,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Spinner from '@components/spinner';
-import validateUserFromServer from '@util/validateUserFromServer';
 
 const Login: NextPage = () => {
 
@@ -83,5 +82,3 @@ const Login: NextPage = () => {
     </>;
 };
 export default Login;
-
-export const getServerSideProps: GetServerSideProps = validateUserFromServer;

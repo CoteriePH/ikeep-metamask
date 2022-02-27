@@ -8,9 +8,8 @@ import Column from 'styled/Column';
 import { BlueButton, DangerButton, TealButton } from 'styled/Button';
 import { TextInputEvent } from '@lib/types';
 import useFetch from '@hooks/useFetch';
-import { getCookie, setCookie } from '@util/cookie';
+import { getCookie } from '@util/cookie';
 import Link from 'next/link';
-import { GetServerSideProps } from 'next';
 
 function Create() {
     const [avatar, setAvatar] = useState('/assets/user_placeholder.svg');
@@ -21,7 +20,7 @@ function Create() {
     const [valid, setValid] = useState(false);
     const [currentView, setCurrentView] = useState(0);
 
-    const { data, error, loading, goFetch, success } = useFetch('/api/user/create', {
+    const { data, error, loading, goFetch } = useFetch('/api/user/create', {
         options: {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -32,9 +31,6 @@ function Create() {
 
     const handleSave = async () => {
         await goFetch();
-        if (data && !error) {
-            setCookie('token', data.access_token);
-        }
     };
 
     useEffect(() => {
@@ -91,17 +87,17 @@ function Create() {
             {currentView === 1 && <>
                 <Avatar
                     src={avatar} size='5rem'
-                    className={loading ? 'loading-avatar' : success ? 'success-avatar' : ''} />
+                    className={loading && 'loading-avatar'} />
 
-                <Text as='h3' mb={1} color={success ? 'green' : error ? 'red' : 'inherit'}>
+                <Text as='h3' mb={1} color={data ? 'green' : error ? 'red' : 'inherit'}>
                     {
                         loading ? 'Creating your account...'
-                            : success ? 'Yey! Account created ✔️'
+                            : data ? 'Yey! Account created ✔️'
                                 : error ? error.message || 'Something went wrong' : 'Choose your Avatar'
                     }
                 </Text>
 
-                {!success ? <>
+                {!data ? <>
                     <AvatarOptions>
                         {avatarSources.map((source, index) =>
                             <Center direction='column' onClick={() => setAvatar(source)} key={index}>
@@ -122,7 +118,7 @@ function Create() {
                 </>
                     :
                     <Center direction='row'>
-                        <Link href='/accounts' passHref>
+                        <Link href='/login' passHref>
                             <TealButton> Login as {nickname}</TealButton>
                         </Link>
                     </Center>
@@ -134,6 +130,7 @@ function Create() {
 }
 
 export default Create;
+
 
 const AvatarOptions = styled.div`
     width: 100%;
