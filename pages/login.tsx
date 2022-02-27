@@ -103,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         });
 
         if (res.ok) {
-            return { props: {} };
+            return { redirect: { destination: '/accounts', permanent: false } };
         }
         else return { redirect: { destination: '/create', permanent: false } };
     }

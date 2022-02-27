@@ -150,7 +150,7 @@ export default function Edit({ account }: { account: any; }) {
                     {state === 'encrypted' ? 'decrypt' : (state === 'decrypted' ? 'Encrypt' : 'submit')}
                 </BlueButton>
                 <Link href='/accounts' passHref>
-                    <DangerButton> cancel </DangerButton>
+                    <DangerButton> back </DangerButton>
                 </Link>
             </ActionButtonsContainer>
 
