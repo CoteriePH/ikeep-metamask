@@ -19,7 +19,6 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
     if (urlIs('/login')) {
         if (!addressIsSet) return redirect('/index.html');
         const userExist = await aUserOwnThisAddress(req.cookies.userWalletAddress);
-        if (userExist && hasSession) return redirect('/accounts');
         if (!userExist) return redirect('/create');
     }
     // if (urlIs('/create')) {
