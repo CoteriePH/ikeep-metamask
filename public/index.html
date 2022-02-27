@@ -2,13 +2,56 @@
 
 <head>
     <title> iKeep </title>
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="icon" href="./logo.svg">
+    <style>
+        .btn {
+            border: none;
+            outline: none;
+            text-transform: uppercase;
+            letter-spacing: 1;
+            border-radius: 9px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 200ms;
+            color: white;
+            height: 50px;
+            min-width: 128px;
+            width: "auto";
+            padding: .5rem 1rem;
+            font-weight: 600;
+            background: #250FCC;
+        }
+
+        .btn:hover {
+            background: #352D70;
+        }
+
+        .btn:disabled {
+            pointer-events: none;
+            background: #352D70;
+            opacity: .5;
+        }
+
+        #logo {
+            width: min(20vw, 400px);
+            transform: translateX(5px);
+        }
+
+        .container {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
-<body class="flex w-screen h-screen justify-center items-center">
-    <div class="flex-col space-y-2 justify-center items-center">
-        <button id='loginButton' class="mx-auto rounded-md p-2 bg-purple-500 text-white">
+<body>
+    <div class="container">
+        <img src="./logo.svg" alt="logo-ikeep" id="logo" />
+        <button id='loginButton' class="btn">
             Login with MetaMask
         </button>
         <p id='userWallet' class='text-lg text-gray-600 my-2'></p>
