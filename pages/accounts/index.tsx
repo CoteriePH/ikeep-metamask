@@ -11,6 +11,7 @@ import Row from 'styled/Row';
 import Link from 'next/link';
 import AccountStore from '@components/AccountStore';
 import Footer from '@components/Footer';
+import Head from 'next/head';
 
 function Accounts({ _user }: any) {
     const { setUser, user } = useUser();
@@ -20,7 +21,8 @@ function Accounts({ _user }: any) {
     });
 
     if (!user) return null;
-    return (
+    return <>
+        <Head> <title> Hello {user.nickname} </title> </Head>
         <Container width='min(600px, 90vw)' py={2}>
             <AccountHeading avatar={user.avatar} nickname={user.nickname} />
 
@@ -49,7 +51,7 @@ function Accounts({ _user }: any) {
             <Footer />
 
         </Container>
-    );
+    </>;
 }
 
 const NoAccounts = styled.div`
