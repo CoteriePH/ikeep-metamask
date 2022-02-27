@@ -7,18 +7,21 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     if (req.method !== 'POST') return res.status(405).send({ message: 'Method Not Allowed' });
 
     const token = req.headers.authorization;
-    const { walletAddress } = JSON.parse(req.body);
+
+    let walletAddress = null;
 
     try {
+        walletAddress = JSON.parse(req.body).walletAddress;
+    } catch (error) { }
 
+    try {
         if (walletAddress) {
-
             const user = await client.user.findFirst({
                 where: { wallet_address: walletAddress }
             });
             if (user) return res.status(200).send(user.nickname);
         }
-        else if (token) {
+        if (token) {
             const user = await client.user.findUnique({
                 where: { id: dehash(token) },
                 include: { accounts: true }

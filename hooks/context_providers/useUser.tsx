@@ -3,7 +3,7 @@ import { Children } from '@lib/types';
 import { getCookie } from '@util/cookie';
 import React from 'react';
 
-const UserContext = React.createContext({});
+const UserContext = React.createContext<any>({});
 
 export default function useUser() {
     return React.useContext(UserContext);
@@ -21,7 +21,7 @@ export const commonFetchConfig = (payload: Object, method: string) => ({
     fetchOnMount: false
 });
 
-export function UserProvider({ children }: Children) {
+export function UserProvider({ children }: any) {
     const [user, setUser] = React.useState(null);
 
     const getUser = () => {
