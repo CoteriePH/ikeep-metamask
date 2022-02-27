@@ -1,7 +1,5 @@
 import useUser from '@hooks/context_providers/useUser';
 import React, { useEffect } from 'react';
-import { GetServerSideProps } from 'next';
-import cookie from 'cookie';
 import Container from 'styled/Container';
 import AccountHeading from '@components/AccountHeading';
 import styled from 'styled-components';
@@ -74,6 +72,10 @@ const HasAccounts = styled.div`
 
 export default Accounts;
 
+// ===========================================================
+
+import { GetServerSideProps } from 'next';
+import cookie from 'cookie';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const reCookie = context.req.headers.cookie ? cookie.parse(context.req.headers.cookie) : {};

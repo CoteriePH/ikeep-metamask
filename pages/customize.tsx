@@ -46,7 +46,7 @@ export default function Customize() {
         }
     });
 
-    const goBack = () => router.back();
+    const goBack = () => router.replace('/accounts');
 
     const handleSave = () => {
         goFetch();
@@ -120,3 +120,23 @@ const AvatarOptions = styled.div`
         margin: 2rem auto;
     }
 `;
+
+
+// ============================================================================
+
+import { GetServerSideProps } from 'next';
+import cookie from 'cookie';
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+
+    const reqCookie = context.req.headers.cookie ? cookie.parse(context.req.headers.cookie) : {};
+
+    if (reqCookie) {
+        const address = reqCookie.userWalletAddress;
+        const token = reqCookie.token;
+        if (address && token) return { props: {} };
+        if (address && !token) return { redirect: { destination: '/login', permanent: false } };
+    }
+
+    return { redirect: { destination: '/index.html', permanent: false } };
+};

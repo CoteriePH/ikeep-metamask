@@ -8,11 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const token = req.headers.authorization;
 
-    let walletAddress = null;
-
-    try {
-        walletAddress = JSON.parse(req.body).walletAddress;
-    } catch (error) { }
+    let walletAddress = req.body.walletAddress;
 
     try {
 

@@ -82,3 +82,31 @@ const Login: NextPage = () => {
     </>;
 };
 export default Login;
+
+// ============================================================================
+
+import { GetServerSideProps } from 'next';
+import cookie from 'cookie';
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+
+    const reqCookie = context.req.headers.cookie ? cookie.parse(context.req.headers.cookie) : {};
+
+    if (reqCookie) {
+        const address = reqCookie.userWalletAddress;
+        if (!address) return { redirect: { destination: '/index.html', permanent: false } };
+
+        const res = await fetch(process.env.BASE_URL + "/api/user", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ walletAddress: address })
+        });
+
+        if (res.ok) {
+            return { props: {} };
+        }
+        else return { redirect: { destination: '/create', permanent: false } };
+    }
+
+    return { props: {} };
+};

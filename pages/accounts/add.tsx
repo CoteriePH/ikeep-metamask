@@ -162,3 +162,18 @@ const FormField = styled.div`
         }
     }
 `;
+
+// ===========================================================
+
+import { GetServerSideProps } from 'next';
+import cookie from 'cookie';
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const reCookie = context.req.headers.cookie ? cookie.parse(context.req.headers.cookie) : {};
+    if (reCookie) {
+        const token = reCookie.token;
+        if (!token) return { redirect: { destination: '/login', permanent: false } };
+    }
+
+    return { props: {} };
+};

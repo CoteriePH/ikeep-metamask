@@ -13,7 +13,7 @@ export default function AccountCreatedSuccess({ title, subtitle }: { title: stri
                 <Text as='h3' align='center'> {title} </Text>
                 <Text align='cener'> {subtitle} </Text>
             </Column>
-            <Link href='/login' passHref>
+            <Link href='/accounts' passHref>
                 <BlueButton> ok </BlueButton>
             </Link>
         </ContainerBox>
