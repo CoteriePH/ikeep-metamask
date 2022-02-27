@@ -24,6 +24,7 @@ export default function ({ account }: { account: any; }) {
     const [password, setPassword] = useState(account.password);
     const [decyrptionPin, setDecyrptionPin] = useState('');
     const [invalidPin, setInvalidPin] = useState(true);
+    const router = useRouter();
 
     const decrypttion = useFetch('/api/account/decrypt', {
         options: {
@@ -33,6 +34,20 @@ export default function ({ account }: { account: any; }) {
         },
         fetchOnMount: false
     });
+
+    const deletion = useFetch('/api/account/delete', {
+        fetchOnMount: false,
+        options: {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json', Authorization: getCookie('token') },
+            body: JSON.stringify({ account_id: account.id })
+        }
+    });
+
+    const deleteAccount = () => {
+        if (!window.confirm(`Are you sure you want to delete your ${account.account_name} account?`)) return;
+        deletion.goFetch();
+    };
 
     const changeState = () => {
         if (state === 'encrypted') {
@@ -60,6 +75,10 @@ export default function ({ account }: { account: any; }) {
     }, [decrypttion.data]);
 
     useEffect(() => {
+        if (deletion.success) router.replace('/accounts');
+    }, [deletion.success]);
+
+    useEffect(() => {
         setInvalidPin(state == 'decrypt' && decyrptionPin.trim().length < 9);
     }, [decyrptionPin]);
 
@@ -72,6 +91,7 @@ export default function ({ account }: { account: any; }) {
 
             <Text as='h1' mb={2} style={{ textAlign: 'right', color: '#47848C' }}>
                 {account.account_name.toUpperCase()}
+                <Text onClick={deleteAccount} ml={.3} fontSize={1.2} as='span'> <i className='bx bx-trash'></i> </Text>
             </Text>
 
             <FormFieldContainer>
@@ -121,8 +141,8 @@ export default function ({ account }: { account: any; }) {
             </FormFieldContainer>}
 
             {decrypttion.loading && <Text color='red' align='center' my={1}> <Spinner size='1.5rem' isLoading={decrypttion.loading} /> </Text>}
-            {decrypttion.error && <Text color='red' align='center' my={1}>
-                {decrypttion.error.message || 'Something went wrong'}
+            {(decrypttion.error || deletion.error) && <Text color='red' align='center' my={1}>
+                {decrypttion.error.message || deletion.error.message || 'Something went wrong'}
             </Text>}
 
             <ActionButtonsContainer>
