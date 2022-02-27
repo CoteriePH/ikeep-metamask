@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 type LogoBackgroundType = {
     src?: string;
-    top?: number;
-    left?: number;
-    right?: number;
-    bottom?: number;
+    top?: number | string;
+    left?: number | string;
+    right?: number | string;
+    bottom?: number | string;
 };
 
 const LogoBackground = styled.img.attrs(props => ({

@@ -30,33 +30,53 @@ function Accounts({ _user }: any) {
         <Container width='min(600px, 90vw)' py={2}>
             <AccountHeading avatar={user.avatar} nickname={user.nickname} />
 
-            {!user.accounts.length && <>
-                <Main>
+            {user.accounts.length === 0 ?
+                <NoAccounts>
                     <Text as='h1' color='#788cb37f' > no accounts stored yet </Text>
                     <Text as='h3' mb={1} mt={2}> Store and Secure your Accounts with us. </Text>
                     <Text> Click the button below to add account details you want to store in the system. Make sure you know your decrypting pin before adding an account. </Text>
-                </Main>
+                </NoAccounts>
+                :
+                <HasAccounts>
+                    {user.accounts.map(({ account_name }: any, index: number) => (
+                        <Link href={`/account/view/${account_name}`} passHref key={index}>
+                            <TealButton> {account_name} </TealButton>
+                        </Link>
+                    ))}
+                </HasAccounts>
+            }
+            <Row horizontalAlignment='center' gap='1rem' my={2} pb={1}>
+                <AccountStore numberOfAccounts={user.accounts.length} />
+                <Link href='/accounts/add' passHref>
+                    <TealButton> Add account </TealButton>
+                </Link>
+            </Row>
 
-                <Row horizontalAlignment='center' gap='1rem' my={2} pb={1}>
-                    <AccountStore numberOfAccounts={user.accounts.length} />
-                    <Link href='/account/add' passHref>
-                        <TealButton> Add account </TealButton>
-                    </Link>
-                </Row>
+            <Footer />
 
-                <Footer />
-            </>}
+
         </Container>
     );
 }
 
-const Main = styled.div`
+const NoAccounts = styled.div`
     background: rgba(142, 179, 255, 0.05);
     border: 1px solid rgba(53, 45, 112, 0.43);
     box-sizing: border-box;
     border-radius: 11px;
     padding: 2rem;
     margin: 1rem 0;
+`;
+
+const HasAccounts = styled.div`
+    background: rgba(142, 179, 255, 0.05);
+    border: 1px solid rgba(53, 45, 112, 0.43);
+    border-radius: 11px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
 `;
 
 export default Accounts;
