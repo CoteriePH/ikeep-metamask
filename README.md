@@ -1,5 +1,10 @@
-# iKeep
+# <img src='./public/logo.svg' width="40" /> iKeep
+
+
 Secured, safe and encrypted account storage system.
+
+[Try live demo](https://ikeep.vercel.app)
+
 
 ## 🚀 Local Usage
 Follow the steps below to get started:
