@@ -32,7 +32,10 @@ export default function AccountHeading({ nickname, avatar }: AccountHeadingProps
                 <Hello> Hello, </Hello>
                 <Row horizontalAlignment='center' gap={.2} pt={.3} className='center-in-600'>
                     <Text as='h1' color='#788CB3'> {nickname} </Text>
-                    <Text as='h2' style={{ transform: 'translateY(4px)' }} color='#788CB3'> <i className='bx bxs-edit-alt'></i> </Text>
+                    <Text
+                        onClick={() => router.replace('/customize')}
+                        as='h2' style={{ transform: 'translateY(4px)' }}
+                        color='#788CB3'> <i className='bx bxs-edit-alt'></i> </Text>
                 </Row>
             </Column>
             <div className="flex" />
