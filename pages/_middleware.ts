@@ -33,6 +33,10 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
         if (!addressIsSet) return redirect('/index.html');
         if (addressIsSet && !hasSession) return redirect('/login');
     }
+    if (urlIs('/accounts/add')) {
+        if (!addressIsSet) return redirect('/index.html');
+        if (addressIsSet && !hasSession) return redirect('/login');
+    }
 }
 
 function redirect(relativeUrl: string) {

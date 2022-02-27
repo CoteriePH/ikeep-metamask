@@ -19,12 +19,6 @@ function Accounts({ _user }: any) {
         if (_user) setUser(_user);
     }, [_user]);
 
-    useEffect(() => {
-        if (user) {
-
-        }
-    }, [user]);
-
     if (!user) return null;
     return (
         <Container width='min(600px, 90vw)' py={2}>
@@ -53,7 +47,6 @@ function Accounts({ _user }: any) {
             </Row>
 
             <Footer />
-
 
         </Container>
     );
