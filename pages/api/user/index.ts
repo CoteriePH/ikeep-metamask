@@ -15,6 +15,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     } catch (error) { }
 
     try {
+
         if (walletAddress) {
             const user = await client.user.findFirst({
                 where: { wallet_address: walletAddress }

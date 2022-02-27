@@ -32,8 +32,8 @@ function Accounts({ _user }: any) {
                 </NoAccounts>
                 :
                 <HasAccounts>
-                    {user.accounts.map(({ account_name }: any, index: number) => (
-                        <Link href={`/account/view/${account_name}`} passHref key={index}>
+                    {user.accounts.map(({ account_name, id }: any, index: number) => (
+                        <Link href={`/accounts/${id}`} passHref key={index}>
                             <TealButton> {account_name} </TealButton>
                         </Link>
                     ))}

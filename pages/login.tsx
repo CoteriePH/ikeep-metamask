@@ -6,7 +6,7 @@ import Column from 'styled/Column';
 import Text from 'styled/Text';
 import TextInput from 'styled/TextInput';
 import { getCookie, setCookie } from '@util/cookie';
-import type { GetServerSideProps, NextPage } from 'next';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';

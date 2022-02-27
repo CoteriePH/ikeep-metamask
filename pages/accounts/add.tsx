@@ -113,7 +113,7 @@ export default function Add() {
     </>;
 }
 
-const BigHeader = styled.h1`
+export const BigHeader = styled.h1`
     font-family: Archivo;
     font-style: normal;
     font-weight: 800;
