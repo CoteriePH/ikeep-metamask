@@ -22,13 +22,13 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
         if (userExist && hasSession) return redirect('/accounts');
         if (!userExist) return redirect('/create');
     }
-    if (urlIs('/create')) {
-        if (!addressIsSet) return redirect('/index.html');
-        if (addressIsSet && hasSession) return redirect('/accounts');
-        const userExist = await aUserOwnThisAddress(req.cookies.userWalletAddress);
+    // if (urlIs('/create')) {
+    //     if (!addressIsSet) return redirect('/index.html');
+    //     if (addressIsSet && hasSession) return redirect('/accounts');
+    //     const userExist = await aUserOwnThisAddress(req.cookies.userWalletAddress);
 
-        if (userExist) return redirect('/login');
-    }
+    //     if (userExist) return redirect('/login');
+    // }
     if (urlIs('/accounts')) {
         if (!addressIsSet) return redirect('/index.html');
         if (addressIsSet && !hasSession) return redirect('/login');
