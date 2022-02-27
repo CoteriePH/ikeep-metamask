@@ -2,7 +2,7 @@ import { dehash } from "@util/hash";
 import client from "@lib/prisma_client";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     if (req.method !== 'POST') return res.status(405).send({ message: 'Method Not Allowed' });
 

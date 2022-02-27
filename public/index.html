@@ -52,7 +52,7 @@
     <div class="container">
         <img src="./logo.svg" alt="logo-ikeep" id="logo" />
         <button id='loginButton' class="btn">
-            Login with MetaMask
+            Connect Wallet
         </button>
         <p id='userWallet' class='text-lg text-gray-600 my-2'></p>
     </div>
@@ -64,9 +64,12 @@
 
         function toggleButton() {
             if (!window.ethereum) {
-                loginButton.innerText = 'MetaMask is not installed';
+                loginButton.innerText = 'Eth Wallet is not installed';
                 loginButton.classList.remove('bg-purple-500', 'text-white');
                 loginButton.classList.add('bg-gray-500', 'text-gray-100', 'cursor-not-allowed');
+                loginButton.addEventListener('click', () => {
+                    window.open("https://metamask.io");
+                });
                 return false;
             }
             loginButton.addEventListener('click', loginWithMetaMask);
@@ -86,7 +89,7 @@
             setCookie('userWalletAddress', window.userWalletAddress, 1);
 
             loginButton.innerText = 'Sign out of MetaMask';
-            window.location.href = 'http://localhost:3001/login';
+            window.location.href = 'http://localhost:3000/login';
 
             loginButton.removeEventListener('click', loginWithMetaMask);
             setTimeout(() => {

@@ -17,7 +17,7 @@ import useFetch from '@hooks/useFetch';
 import Spinner from '@components/spinner';
 import { getCookie } from '@util/cookie';
 
-export default function ({ account }: { account: any; }) {
+export default function Edit({ account }: { account: any; }) {
 
     const [state, setState] = useState('encrypted');
     const [username_email, setUsername_email] = useState(account.username_email);
