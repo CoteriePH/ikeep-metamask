@@ -26,7 +26,10 @@ export function UserProvider({ children }: any) {
 
     const getUser = () => {
         return useFetch('/api/user', {
-            options: { headers: { Authorization: getCookie('token') }, },
+            options: {
+                method: 'POST',
+                headers: { Authorization: getCookie('token'), 'Content-Type': 'application/json' },
+            },
             fetchOnMount: false
         });
     };
