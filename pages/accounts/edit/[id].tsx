@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import cookie from 'cookie';
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import { useRouter } from "next/router";
@@ -19,8 +19,9 @@ import useFetch from "@hooks/useFetch";
 import { getCookie } from "@util/cookie";
 import Spinner from "@components/spinner";
 
+export default memo(Edit);
 
-export default function Edit({ account }: { account: any; }) {
+function Edit({ account }: { account: any; }) {
 
     const [username_email, setUsername_email] = useState(() => account.username_email);
     const [password, setPassword] = useState(() => account.password);

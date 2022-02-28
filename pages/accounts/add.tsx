@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useEffect } from 'react';
+import React, { memo, useEffect } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import useForm from '@hooks/useForm';
@@ -15,7 +15,9 @@ import { getCookie } from '@util/cookie';
 import Spinner from '@components/spinner';
 import Row from 'styled/Row';
 
-export default function Add() {
+export default memo(Add);
+
+function Add() {
 
     const { values, onInputHandler } = useForm(() => ({
         account_name: '',

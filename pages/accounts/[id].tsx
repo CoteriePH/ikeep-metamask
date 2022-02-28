@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { memo, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -17,7 +17,9 @@ import useFetch from '@hooks/useFetch';
 import Spinner from '@components/spinner';
 import { getCookie } from '@util/cookie';
 
-export default function Edit({ account }: { account: any; }) {
+export default memo(Edit);
+
+function Edit({ account }: { account: any; }) {
 
     const [state, setState] = useState('encrypted');
     const [username_email, setUsername_email] = useState(account.username_email);
