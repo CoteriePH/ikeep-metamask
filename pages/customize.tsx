@@ -29,10 +29,19 @@ const avatarSources = [
 export default function Customize() {
 
     const router = useRouter();
+    const { user } = useUser();
 
     const [avatarSource, setAvatarSource] = useState('/assets/user_placeholder.svg');
     const [nickname, setNickname] = useState("");
     const [dialogueIsShown, setDialogueIsShown] = useState(false);
+
+    useEffect(() => {
+        if (!user) router.replace('/accounts');
+        else {
+            setAvatarSource(user.avatar);
+            setNickname(user.nickname);
+        }
+    }, []);
 
     const { loading, error, goFetch, success } = useFetch('/api/user/customize', {
         fetchOnMount: false,
@@ -126,6 +135,7 @@ const AvatarOptions = styled.div`
 
 import { GetServerSideProps } from 'next';
 import cookie from 'cookie';
+import useUser from '@hooks/context_providers/useUser';
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 
