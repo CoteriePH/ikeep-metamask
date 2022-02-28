@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { memo, useContext, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -11,27 +11,51 @@ import TextInput from 'styled/TextInput';
 import { TextInputEvent } from '@lib/types';
 import { BlueButton, DangerButton } from 'styled/Button';
 import Footer from '@components/Footer';
-import { GetServerSideProps } from 'next';
-import cookie from 'cookie';
 import useFetch from '@hooks/useFetch';
 import Spinner from '@components/spinner';
 import { getCookie } from '@util/cookie';
+import useUser from '@hooks/context_providers/useUser';
+import Center from '@styled/Center';
 
 export default memo(Edit);
 
-function Edit({ account }: { account: any; }) {
+function Edit() {
+    const { user, getUser, setUser } = useUser();
+    const { data, error, goFetch, success } = getUser();
+    const [account, setAccount] = useState<any>(null);
+    const router = useRouter();
 
-    const [state, setState] = useState('encrypted');
-    const [username_email, setUsername_email] = useState(account.username_email);
-    const [password, setPassword] = useState(account.password);
+    const [username_email, setUsername_email] = useState('');
+    const [password, setPassword] = useState('');
     const [decyrptionPin, setDecyrptionPin] = useState('');
     const [invalidPin, setInvalidPin] = useState(true);
-    const router = useRouter();
+
+
+    useEffect(() => {
+        if (!user) goFetch();
+        else {
+            const { id } = router.query;
+            const accountExist = user.accounts.find((account: any) => account.id == id);
+            if (accountExist) {
+                setAccount(accountExist);
+                setUsername_email(accountExist.username_email);
+                setPassword(accountExist.password);
+            }
+            else router.replace('/accounts');
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (success) setUser(data);
+        if (error) router.replace('/index.html');
+    }, [success, data, error]);
+
+    const [state, setState] = useState('encrypted');
 
     const decrypttion = useFetch('/api/account/decrypt', {
         options: {
             headers: { 'Content-Type': 'application/json', Authorization: getCookie('token') },
-            body: JSON.stringify({ account_id: account.id, pin: decyrptionPin }),
+            body: JSON.stringify({ account_id: account?.id, pin: decyrptionPin }),
             method: 'POST'
         },
         fetchOnMount: false
@@ -42,7 +66,7 @@ function Edit({ account }: { account: any; }) {
         options: {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json', Authorization: getCookie('token') },
-            body: JSON.stringify({ account_id: account.id })
+            body: JSON.stringify({ account_id: account?.id })
         }
     });
 
@@ -84,81 +108,88 @@ function Edit({ account }: { account: any; }) {
         setInvalidPin(state == 'decrypt' && decyrptionPin.trim().length < 9);
     }, [decyrptionPin]);
 
-    return <>
-        <Head> <title> Your {account.account_name} account - iKeep </title> </Head>
+    return !account ?
+        <>
+            <Center direction='column' gap={.5} p={2}>
+                <Spinner isLoading={true} />
+                <Text as='h1' align='center'> iKeep </Text>
+            </Center>
+        </>
+        : <>
+            <Head> <title> Your {account.account_name} account - iKeep </title> </Head>
 
-        <Container width='min(600px, 100vw)' m='auto' px={2}>
+            <Container width='min(600px, 100vw)' m='auto' px={2}>
+                <Container py={2}> <BigHeader> view account </BigHeader> </Container>
 
-            <Container py={2}> <BigHeader> view account </BigHeader> </Container>
+                <Text as='h1' mb={2} style={{ textAlign: 'right', color: '#47848C' }}>
+                    {account.account_name.toUpperCase()}
+                    <Text onClick={deleteAccount} ml={.3} fontSize={1.2} as='span'> <i className='bx bx-trash'></i> </Text>
+                </Text>
 
-            <Text as='h1' mb={2} style={{ textAlign: 'right', color: '#47848C' }}>
-                {account.account_name.toUpperCase()}
-                <Text onClick={deleteAccount} ml={.3} fontSize={1.2} as='span'> <i className='bx bx-trash'></i> </Text>
-            </Text>
+                <FormFieldContainer>
+                    <Text htmlFor="email_username" as='label' align='right'> EMAIL/USERNAME: </Text>
+                    <Row m='0' verticalAlignment='flex-end' width='auto'>
+                        <TextInput
+                            disabled={state === 'decrypted'}
+                            placeholder='Email or Username'
+                            id='email_username'
+                            value={username_email}
+                            onInput={(e: TextInputEvent) => setUsername_email(e.target.value)}
+                        />
 
-            <FormFieldContainer>
-                <Text htmlFor="email_username" as='label' align='right'> EMAIL/USERNAME: </Text>
-                <Row m='0' verticalAlignment='flex-end' width='auto'>
+                        {state === 'decrypted' &&
+                            <Link href={'/accounts/edit/' + account.id} passHref>
+                                <i className='bx bxs-message-square-edit' style={{ fontSize: '3rem' }}></i>
+                            </Link>
+                        }
+                    </Row>
+                </FormFieldContainer>
+
+                <FormFieldContainer>
+                    <label htmlFor="password"> PASSWORD: </label>
+                    <Row m='0' verticalAlignment='flex-end' width='auto'>
+                        <TextInput
+                            disabled={state === 'decrypted'}
+                            placeholder='Password'
+                            id='password'
+                            value={password}
+                            onInput={(e: TextInputEvent) => setPassword(e.target.value)}
+                        />
+
+                        {state === 'decrypted' &&
+                            <Link href={'/accounts/edit/' + account.id} passHref>
+                                <i className='bx bxs-message-square-edit' style={{ fontSize: '3rem' }}></i>
+                            </Link>
+                        }
+                    </Row>
+                </FormFieldContainer>
+
+                {state === 'decrypt' && <FormFieldContainer>
+                    <label htmlFor="decryptingPin"> ENTER DECRYPTION PIN: </label>
                     <TextInput
-                        disabled={state === 'decrypted'}
-                        placeholder='Email or Username'
-                        id='email_username'
-                        value={username_email}
-                        onInput={(e: TextInputEvent) => setUsername_email(e.target.value)}
+                        placeholder='DECRYPTION PIN' id='decryptingPin'
+                        value={decyrptionPin}
+                        onInput={(e: TextInputEvent) => setDecyrptionPin(e.target.value)}
                     />
+                </FormFieldContainer>}
 
-                    {state === 'decrypted' &&
-                        <Link href={'/accounts/edit/' + account.id} passHref>
-                            <i className='bx bxs-message-square-edit' style={{ fontSize: '3rem' }}></i>
-                        </Link>
-                    }
-                </Row>
-            </FormFieldContainer>
+                {decrypttion.loading && <Text color='red' align='center' my={1}> <Spinner size='1.5rem' isLoading={decrypttion.loading} /> </Text>}
+                {(decrypttion.error || deletion.error) && <Text color='red' align='center' my={1}>
+                    {decrypttion.error.message || deletion.error.message || 'Something went wrong'}
+                </Text>}
 
-            <FormFieldContainer>
-                <label htmlFor="password"> PASSWORD: </label>
-                <Row m='0' verticalAlignment='flex-end' width='auto'>
-                    <TextInput
-                        disabled={state === 'decrypted'}
-                        placeholder='Password'
-                        id='password'
-                        value={password}
-                        onInput={(e: TextInputEvent) => setPassword(e.target.value)}
-                    />
+                <ActionButtonsContainer>
+                    <BlueButton onClick={changeState} disabled={invalidPin || decrypttion.loading}>
+                        {state === 'encrypted' ? 'decrypt' : (state === 'decrypted' ? 'Encrypt' : 'submit')}
+                    </BlueButton>
+                    <Link href='/accounts' passHref>
+                        <DangerButton> back </DangerButton>
+                    </Link>
+                </ActionButtonsContainer>
 
-                    {state === 'decrypted' &&
-                        <Link href={'/accounts/edit/' + account.id} passHref>
-                            <i className='bx bxs-message-square-edit' style={{ fontSize: '3rem' }}></i>
-                        </Link>
-                    }
-                </Row>
-            </FormFieldContainer>
-
-            {state === 'decrypt' && <FormFieldContainer>
-                <label htmlFor="decryptingPin"> ENTER DECRYPTION PIN: </label>
-                <TextInput
-                    placeholder='DECRYPTION PIN' id='decryptingPin'
-                    value={decyrptionPin}
-                    onInput={(e: TextInputEvent) => setDecyrptionPin(e.target.value)} />
-            </FormFieldContainer>}
-
-            {decrypttion.loading && <Text color='red' align='center' my={1}> <Spinner size='1.5rem' isLoading={decrypttion.loading} /> </Text>}
-            {(decrypttion.error || deletion.error) && <Text color='red' align='center' my={1}>
-                {decrypttion.error.message || deletion.error.message || 'Something went wrong'}
-            </Text>}
-
-            <ActionButtonsContainer>
-                <BlueButton onClick={changeState} disabled={invalidPin || decrypttion.loading}>
-                    {state === 'encrypted' ? 'decrypt' : (state === 'decrypted' ? 'Encrypt' : 'submit')}
-                </BlueButton>
-                <Link href='/accounts' passHref>
-                    <DangerButton> back </DangerButton>
-                </Link>
-            </ActionButtonsContainer>
-
-            <Footer />
-        </Container>
-    </>;
+                <Footer />
+            </Container>
+        </>;
 }
 
 const ActionButtonsContainer = styled.div`
@@ -195,26 +226,3 @@ const FormFieldContainer = styled.div`
         align-items: flex-start;
     }
 `;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const reCookie = context.req.headers.cookie ? cookie.parse(context.req.headers.cookie) : {};
-    const { id }: any = context.params;
-
-    if (reCookie) {
-        const token = reCookie.token;
-        if (!token) return { redirect: { destination: '/login', permanent: false } };
-        const res = await fetch(process.env.BASE_URL + "/api/user", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: token },
-        });
-
-        if (res.ok) {
-            const user = await res.json();
-            const account = user.accounts.find((a: any) => a.id === id);
-            if (account) return { props: { account } };
-            return { redirect: { destination: '/account/404', permanent: false } };
-        }
-    }
-
-    return { props: {} };
-};
