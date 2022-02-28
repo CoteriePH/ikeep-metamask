@@ -94,7 +94,7 @@ export default function Customize() {
             {error && <Text style={{ color: 'red' }}> Something went wrong </Text>}
         </Column>
 
-        {dialogueIsShown && <AccountCreatedSuccess subtitle={'You will be redirected to login page'} title='Account Created Successfully' />}
+        {dialogueIsShown && <AccountCreatedSuccess subtitle={'Go back to my account'} title="Your changes has been saved!" />}
     </>;
 }
 
