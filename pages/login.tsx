@@ -94,18 +94,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     if (reqCookie) {
         const address = reqCookie.userWalletAddress;
+        const token = reqCookie.token;
         if (!address) return { redirect: { destination: '/index.html', permanent: false } };
-
-        const res = await fetch(process.env.BASE_URL + "/api/user", {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ walletAddress: address })
-        });
-
-        if (res.ok) {
-            return { redirect: { destination: '/accounts', permanent: false } };
-        }
-        else return { redirect: { destination: '/create', permanent: false } };
+        if (token) return { redirect: { destination: '/accounts', permanent: false } };
     }
 
     return { props: {} };
