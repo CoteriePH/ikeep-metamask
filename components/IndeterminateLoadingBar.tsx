@@ -15,16 +15,18 @@ export default function IndeterminateLoadingBar() {
 }
 
 const IndeterminateLoadingBarContainer = styled.div`
-    position:absolute;
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
     width: 100vw;
     height: 5px;
     overflow-x: hidden;
+    z-index: 100;
 
     & .line{
         position:absolute;
+        top: 0;
         opacity: 0.4;
         background:#4a8df8;
         width:150%;

@@ -12,6 +12,9 @@ const GlobalStyle = createGlobalStyle`
         position: relative;
         scroll-behavior: smooth;
     }
+    #__next {
+        position: relative;
+    }
     a {
         text-decoration: none;
         color: inherit;

@@ -44,10 +44,7 @@ const Login: NextPage = () => {
     return <>
         <Head> <title> Login - iKeep </title> </Head>
 
-        <Center
-            width='500px'
-            direction='column'
-            gap={1.5} p={2} m='2rem auto'>
+        <Center width='500px' direction='column' gap={1.5} p={2}>
 
             <Image src='/logo.svg' width={150} height={150} alt='iKeep logo' />
 
