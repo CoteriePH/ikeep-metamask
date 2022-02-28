@@ -21,7 +21,7 @@ export const commonFetchConfig = (payload: Object, method: string) => ({
     fetchOnMount: false
 });
 
-export function UserProvider({ children }: { children: Children; }) {
+export function UserProvider({ children }: any) {
     const [user, setUser] = React.useState(null);
 
     const getUser = () => {
