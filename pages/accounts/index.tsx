@@ -18,10 +18,8 @@ function Accounts() {
     const router = useRouter();
 
     useEffect(() => {
-        if (!user) {
-            goFetch();
-        }
-    }, [user]);
+        goFetch();
+    }, []);
 
     useEffect(() => {
         if (success) setUser(data);
